@@ -40,7 +40,7 @@ RUN php artisan route:cache
 RUN php artisan view:cache
 
 # Optimizing Filament 
-php artisan filament:optimize
+RUN php artisan filament:optimize
 
 # Compilation des assets de Breeze (ou de votre site)
 RUN npm install
