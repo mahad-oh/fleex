@@ -18,7 +18,8 @@ RUN apk update && apk upgrade
 RUN apk add nodejs npm
 
 ENV WEB_DOCUMENT_ROOT /app/public
-ENV APP_ENV production
+ENV APP_ENV local
+ENV APP_DEBUG true
 WORKDIR /app
 COPY . .
 
@@ -43,5 +44,3 @@ RUN npm install
 RUN npm run build
 
 RUN chown -R application:application .
-
-ENTRYPOINT [ "php","artisan","serve" ]
