@@ -39,6 +39,10 @@ RUN php artisan route:cache
 # Optimizing View loading
 RUN php artisan view:cache
 
+# Publish Filament Views
+RUN php artisan filament:install --panels
+RUN php artisan filament:assets
+
 # Compilation des assets de Breeze (ou de votre site)
 RUN npm install
 RUN npm run build
