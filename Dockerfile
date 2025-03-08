@@ -43,3 +43,5 @@ RUN npm install
 RUN npm run build
 
 RUN chown -R application:application .
+
+ENTRYPOINT [ "php","artisan","serve" ]
