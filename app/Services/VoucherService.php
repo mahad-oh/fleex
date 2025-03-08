@@ -44,7 +44,7 @@ class VoucherService
 
 
         // redeeming the voucher code (use event instead)
-        $voucher_redemeed = Voucher::where('serial_num',$voucher->serial_num);
+        $voucher_redemeed = Voucher::where('serial_num',$voucher->serial_num)->first();
         $voucher_redemeed->status = 'redemeed';
         $voucher_redemeed->save();
 
