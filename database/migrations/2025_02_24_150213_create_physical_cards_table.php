@@ -11,14 +11,14 @@ return new class extends Migration
     {
         $table = 'physical_cards';
         Schema::create($table, function (Blueprint $table) {
-            $table->uuid('uuid')->primary()->default(DB::raw('gen_random_uuid()'));
-            $table->uuid('voucher_id');
+            $table->id()->primary();
+            $table->bigInteger('voucher_id');
             $table->timestamp('printed_at')->nullable();
-            $table->uuid('distributor_id')->nullable();
+            $table->bigInteger('distributor_id')->nullable();
             $table->timestamp('distributed_at')->nullable();
 
-            $table->foreign('voucher_id')->references('uuid')->on('vouchers')->onDelete('cascade');
-            $table->foreign('distributor_id')->references('uuid')->on('distributors')->onDelete('set null');
+            $table->foreign('voucher_id')->references('id')->on('vouchers')->onDelete('cascade');
+            $table->foreign('distributor_id')->references('id')->on('distributors')->onDelete('set null');
         });
         // Activer RLS pour la table companies
         //DB::statement("ALTER TABLE $table ENABLE ROW LEVEL SECURITY;");

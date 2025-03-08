@@ -11,13 +11,13 @@ return new class extends Migration
     {
         $table = 'voucher_redemptions';
         Schema::create($table, function (Blueprint $table) {
-            $table->uuid('uuid')->primary()->default(DB::raw('gen_random_uuid()'));
-            $table->uuid('voucher_id');
-            $table->uuid('wallet_id');
+            $table->id()->primary();
+            $table->bigInteger('voucher_id');
+            $table->bigInteger('wallet_id');
             $table->timestamp('redeemed_at')->default(DB::raw('NOW()'));
 
-            $table->foreign('voucher_id')->references('uuid')->on('vouchers')->onDelete('cascade');
-            $table->foreign('wallet_id')->references('uuid')->on('wallets')->onDelete('cascade');
+            $table->foreign('voucher_id')->references('id')->on('vouchers')->onDelete('cascade');
+            $table->foreign('wallet_id')->references('id')->on('wallets')->onDelete('cascade');
         });
         // Activer RLS pour la table companies
         //DB::statement("ALTER TABLE $table ENABLE ROW LEVEL SECURITY;");

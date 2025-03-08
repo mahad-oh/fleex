@@ -11,19 +11,32 @@ return new class extends Migration
     {
         $table = 'vouchers';
         Schema::create($table, function (Blueprint $table) {
-            $table->uuid('uuid')->primary()->default(DB::raw('gen_random_uuid()'));
-            $table->uuid('company_id');
-            $table->binary('code_encrypted'); // BYTEA pour le code chiffré
-            $table->string('type')->comment('physical, electronic');
-            $table->decimal('amount', 10, 2);
-            $table->string('status')->default('active')->comment('active, inactive, redeemed');
+            
+            $table->id()->primary();
+            $table->string('serial_num')->unique();
+            $table->text('code_encrypted')->unique()->comment('Encrypted voucher code'); // BYTEA pour le code chiffré
+            $table->binary('code_hashed')->unique()->nullable(true)->comment('Hashed voucher code');
+            $table->enum('type',['physical','electronic'])->default('physical')->comment('physical, electronic');
+            $table->decimal('amount', 10, 2)->nullable(true);
+            $table->enum('status',['active','inactive','redemeed'])->default('inactive')->comment('active, inactive, redeemed');
+            $table->bigInteger('company_id')->nullable(true);
             $table->timestamp('expires_at')->nullable();
+            $table->uuid('key_id')->references('pgsoduim.key(id)')->default(DB::raw('(pgsodium.create_key()).id'));
+            $table->binary('nonce')->default(DB::raw('pgsodium.crypto_aead_det_noncegen()'));
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
 
-            $table->foreign('company_id')->references('uuid')->on('companies')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
+        
+            
         });
         // Activer RLS pour la table companies
         //DB::statement("ALTER TABLE $table ENABLE ROW LEVEL SECURITY;");
+        
+        //Activer SECURITY LABEL of 
+        DB::statement("SECURITY LABEL FOR pgsodium
+            ON COLUMN $table.code_encrypted
+            IS 'ENCRYPT WITH KEY COLUMN key_id ASSOCIATED (id) NONCE nonce'");
+
     }
 
     public function down()

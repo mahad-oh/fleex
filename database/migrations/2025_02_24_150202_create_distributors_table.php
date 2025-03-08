@@ -11,12 +11,12 @@ return new class extends Migration
     {
         $table = 'distributors';
         Schema::create($table, function (Blueprint $table) {
-            $table->uuid('uuid')->primary()->default(DB::raw('gen_random_uuid()'));
-            $table->uuid('company_id')->nullable();
+            $table->id()->primary();
+            $table->bigInteger('company_id')->nullable();
             $table->string('name');
             $table->jsonb('contact_info')->nullable();
 
-            $table->foreign('company_id')->references('uuid')->on('companies')->onDelete('set null');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
         });
         // Activer RLS pour la table companies
         //DB::statement("ALTER TABLE $table ENABLE ROW LEVEL SECURITY;");

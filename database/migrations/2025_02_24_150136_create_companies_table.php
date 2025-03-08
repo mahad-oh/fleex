@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-
+    
     public function up()
     {
         $table = 'companies';
         Schema::create($table, function (Blueprint $table) {
-            $table->uuid('uuid')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->id()->primary();
             $table->string('name');
             $table->jsonb('contact_info')->nullable();
             $table->timestamp('created_at')->default(DB::raw('NOW()'));

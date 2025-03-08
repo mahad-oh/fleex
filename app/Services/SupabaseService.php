@@ -43,7 +43,13 @@ class SupabaseService
         ]);
 
         if ($response->failed()) {
-            throw new \Exception('Échec de la connexion : ' . $response->json('error_description', 'Erreur inconnue'));
+            switch($response->json('error_code')){
+                case 'email_not_confirmed':
+                        throw new \Exception('Échec de la connexion : Vueillez confirmer votre email.');
+                    break;
+                default:
+                    throw new \Exception('Échec de la connexion : ' . $response->json('error_description', 'Erreur inconnue'));
+            }
         }
 
         return $response->json();
@@ -88,20 +94,5 @@ class SupabaseService
 
         return $response->json();
     }
-
-    public function syncProfile($userData, $token)
-    {
-        $profileData = [
-            'id' => $userData['id'],
-            'email' => $userData['email'],
-            'role' => $userData['user_metadata']['role'] ?? 'company_user',
-            'company_id' => $userData['user_metadata']['company_id'] ?? null,
-        ];
-
-        Http::withHeaders([
-            'apikey' => $this->key,
-            'Authorization' => "Bearer {$token}",
-            'Content-Type' => 'application/json',
-        ])->post("{$this->url}/rest/v1/profiles", $profileData);
-    }
+  
 }

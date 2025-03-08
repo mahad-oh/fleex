@@ -11,12 +11,12 @@ return new class extends Migration
     {
         $table = 'wallets';
         Schema::create($table, function (Blueprint $table) {
-            $table->uuid('uuid')->primary()->default(DB::raw('gen_random_uuid()'));
-            $table->uuid('company_id');
+            $table->id()->primary();
+            $table->bigInteger('company_id');
             $table->string('wallet_id')->unique();
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
 
-            $table->foreign('company_id')->references('uuid')->on('companies')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
         // Activer RLS pour la table companies
         //DB::statement("ALTER TABLE $table ENABLE ROW LEVEL SECURITY;");
