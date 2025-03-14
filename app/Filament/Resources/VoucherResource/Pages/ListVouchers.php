@@ -5,6 +5,7 @@ namespace App\Filament\Resources\VoucherResource\Pages;
 use App\Filament\Resources\VoucherResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Forms\Components\FileUpload;
 
 class ListVouchers extends ListRecords
 {
@@ -15,6 +16,7 @@ class ListVouchers extends ListRecords
         return [
             Actions\CreateAction::make()
             ->successRedirectUrl($this->getResource()::getUrl('index')),
+
         ];
     }
 }

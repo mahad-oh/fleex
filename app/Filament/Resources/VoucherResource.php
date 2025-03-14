@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Http;
 use App\Services\VoucherService;
+use Filament\Tables\Actions\ImportAction;
+use App\Filament\Imports\VoucherImporter;
 
 class VoucherResource extends Resource
 {
@@ -113,7 +115,11 @@ class VoucherResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->recordUrl(null);
+            ->recordUrl(null)
+            ->headerActions([
+                ImportAction::make()
+                ->importer(VoucherImporter::class) 
+            ]);
     }
 
     public static function getRelations(): array
