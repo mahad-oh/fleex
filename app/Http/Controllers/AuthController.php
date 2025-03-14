@@ -56,7 +56,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
-
+        
         try {
             
             $authData = $this->supabase->login($request->email, $request->password);

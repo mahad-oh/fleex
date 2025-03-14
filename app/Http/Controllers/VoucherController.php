@@ -48,18 +48,19 @@ class VoucherController extends Controller
         $request->validate([
             'code' => 'required|integer|min:12'
         ]);
+
         
         try{
             $voucher_info = VoucherService::redeem($request->code);
             
             return response()->json([
-                'message' => "Ce voucher ne  sera plus utilisable.",
+                'message' => "Ce voucher ne sera plus utilisable.",
                 'voucher_info' => [$voucher_info]
             ],200);
         } catch (\Exception $e){
             return response()->json([
-                "error" => "Le code voucher est invalide.",
-                "message" => $e->getMessage()
+                "message" => "Le code voucher est invalide ou inactif.",
+                //error" => $e->getMessage()
             ],404);
         }
     }
@@ -80,8 +81,8 @@ class VoucherController extends Controller
             ]);
         }catch(\Exception $e){
             return response()->json([
-                "error" => "Ce code voucher est introuvable.",
-                //"message" => $e->getMessage()
+                "message" => "Ce code voucher est invalid ou inactif.",
+                //"error" => $e->getMessage()
             ],404);
         }
     }

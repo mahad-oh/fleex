@@ -13,7 +13,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/me', [AuthController::class, 'me']);
 
-    Route::get('/vouchers/redeem', [VoucherController::class, 'redeem']);
+    Route::post('/vouchers/redeem', [VoucherController::class, 'redeem']);
     Route::get('/vouchers/check', [VoucherController::class, 'check']);
     Route::get('/vouchers/activate', [VoucherController::class, 'activate'])->name('voucher.activer');
 });
